@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SupeWatch - Superhero Tracking System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #e31837;
+            --primary-dark: #b31229;
+            --dark: #1a1a1a;
+            --darker: #0f0f0f;
+            --light: #ffffff;
+            --gray: #333333;
+            --accent: #ffd700;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: linear-gradient(to right, var(--darker), var(--dark));
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 20px rgba(227, 24, 55, 0.2);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn {
+            padding: 0.8rem 1.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--light);
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(227, 24, 55, 0.3);
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                        url("/api/placeholder/1920/1080") center/cover;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--primary) 0%, transparent 100%);
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            color: #f0f0f0;
+            animation: fadeIn 1s ease-out 0.5s both;
+        }
+
+        .featured-section {
+            padding: 6rem 2rem;
+            background-color: var(--darker);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--accent);
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .featured-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: linear-gradient(to bottom right, var(--gray), var(--dark));
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(227, 24, 55, 0.2);
+            border-color: var(--primary);
+        }
+
+        .feature-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .feature-content {
+            padding: 1.5rem;
+        }
+
+        .feature-content h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        .feature-badge {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            background-color: var(--primary);
+            color: var(--light);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .stats-section {
+            padding: 4rem 2rem;
+            background: linear-gradient(45deg, var(--darker) 0%, var(--dark) 100%);
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            padding: 2rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #cccccc;
+            font-size: 1.1rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            Supe<span>Watch</span>
+        </div>
+        <div class="nav-links">
+            <a href="#" class="animate__animated animate__fadeIn">Home</a>
+            <a href="#dashboard" class="animate__animated animate__fadeIn">Dashboard</a>
+            <a href="#news" class="animate__animated animate__fadeIn">News</a>
+            <a href="#incidents" class="animate__animated animate__fadeIn">Incidents</a>
+            <button class="btn btn-primary animate__animated animate__fadeIn" onclick="window.location.href='login.html'">Login</button>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="animate__animated animate__fadeInDown">Track Supes in Real-Time</h1>
+            <p class="animate__animated animate__fadeIn animate__delay-1s">Your premier platform for monitoring superhero activities, incidents, and public appearances.</p>
+            <button class="btn btn-primary animate__animated animate__fadeIn animate__delay-2s" onclick="window.location.href='dashboard.html'">Enter Dashboard</button>
+        </div>
+    </section>
+
+    <section class="featured-section">
+        <h2 class="section-title">Latest Supe Activities</h2>
+        <div class="featured-grid">
+            <div class="feature-card animate__animated animate__fadeInUp">
+                <img src="/api/placeholder/400/300" alt="Homelander" class="feature-image">
+                <div class="feature-content">
+                    <h3>Homelander Sighting</h3>
+                    <p>Recent appearance at Vought Tower raises questions about corporate influence.</p>
+                    <span class="feature-badge">High Priority</span>
+                </div>
+            </div>
+            <div class="feature-card animate__animated animate__fadeInUp animate__delay-1s">
+                <img src="/api/placeholder/400/300" alt="Starlight" class="feature-image">
+                <div class="feature-content">
+                    <h3>Starlight Investigation</h3>
+                    <p>Former Seven member's activities under scrutiny after recent events.</p>
+                    <span class="feature-badge">Breaking News</span>
+                </div>
+            </div>
+            <div class="feature-card animate__animated animate__fadeInUp animate__delay-2s">
+                <img src="/api/placeholder/400/300" alt="The Deep" class="feature-image">
+                <div class="feature-content">
+                    <h3>Coastal Incident</h3>
+                    <p>Mysterious events reported along the eastern seaboard.</p>
+                    <span class="feature-badge">Under Investigation</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-card animate__animated animate__fadeIn">
+                <div class="stat-number">247</div>
+                <div class="stat-label">Active Incidents</div>
+            </div>
+            <div class="stat-card animate__animated animate__fadeIn animate__delay-1s">
+                <div class="stat-number">89</div>
+                <div class="stat-label">Tracked Supes</div>
+            </div>
+            <div class="stat-card animate__animated animate__fadeIn animate__delay-2s">
+                <div class="stat-number">1.2M</div>
+                <div class="stat-label">Citizen Reports</div>
+            </div>
+            <div class="stat-card animate__animated animate__fadeIn animate__delay-3s">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Live Monitoring</div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Add scroll animation
+        document.addEventListener('scroll', () => {
+            const elements = document.querySelectorAll('.animate__animated');
+            elements.forEach(element => {
+                if (isElementInViewport(element)) {
+                    element.style.visibility = 'visible';
+                    element.classList.add('animate__fadeIn');
+                }
+            });
+        });
+
+        function isElementInViewport(el) {
+            const rect = el.getBoundingClientRect();
+            return (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.documentWidth)
+            );
+        }
+    </script>
+</body>
+</html>
