@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>SupeWatch - Heatmap</title>
+
+    <!-- Leaflet CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet/dist/leaflet.css"
+    />
+    <!-- Leaflet JS -->
+    <script
+      src="https://unpkg.com/leaflet/dist/leaflet.js"
+    ></script>
+    <!-- Leaflet Heat plugin -->
+    <script
+      src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"
+    ></script>
+
+    <!-- Font Awesome for the hamburger icon -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <!-- Animate.css for animations (optional) -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* Root color variables (SupeWatch style) */
+      :root {
+        --primary: #e31837;
+        --primary-dark: #b31229;
+        --dark: #1a1a1a;
+        --darker: #0f0f0f;
+        --light: #ffffff;
+        --accent: #ffd700;
+      }
+
+      /* Body with red-to-black gradient */
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(to right, rgb(208, 68, 68), rgb(38, 30, 30));
+        color: var(--light);
+      }
+
+      /* Fixed Navbar */
+      .navbar {
+        background: linear-gradient(to right, var(--darker), var(--dark));
+        padding: 1rem 2rem;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 20px rgba(227, 24, 55, 0.2);
+      }
+      .incidents{
+            margin-right: 25px;
+        }
+      .logo {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: var(--primary);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+      .logo span {
+        color: var(--accent);
+      }
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+        transition: all 0.3s ease;
+      }
+      .nav-links a {
+        color: var(--light);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+      }
+      .nav-links a:hover {
+        color: var(--accent);
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+      .hamburger {
+        display: none;
+        font-size: 1.5rem;
+        background: none;
+        border: none;
+        color: var(--light);
+        cursor: pointer;
+      }
+
+      /* Page Heading & Description */
+      .page-heading {
+        text-align: center;
+        margin-top: 100px; /* below navbar */
+        font-size: 2rem;  
+        font-weight: 600;
+      }
+      .description {
+        text-align: center;
+        max-width: 800px;
+        margin: 10px auto 0;
+        font-size: 1rem;
+        color: #f0f0f0;
+      }
+
+      /* Map Container */
+      #map {
+        width: 100%;
+        height: calc(100vh - 170px); /* adjusts for navbar & heading */
+        margin-top: 20px;
+      }
+
+      /* Responsive Hamburger Menu */
+      @media (max-width: 768px) {
+        .hamburger {
+          display: block;
+        }
+        .nav-links {
+          position: absolute;
+          top: 70px;
+          right: 0;
+          background-color: var(--darker);
+          width: 200px;
+          flex-direction: column;
+          gap: 0;
+          display: none;
+          padding: 1rem 0;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        .nav-links.show {
+          display: flex;
+        }
+        .nav-links a {
+          margin: 0.5rem 1rem;
+        }
+        
+      }
+    </style>
+
+    <script>
+      // Toggle hamburger menu for mobile
+      document.addEventListener("DOMContentLoaded", () => {
+        const hamburgerBtn = document.getElementById("hamburgerBtn");
+        const navLinks = document.querySelector(".nav-links");
+        hamburgerBtn.addEventListener("click", () => {
+          navLinks.classList.toggle("show");
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="logo">
+        Supe<span>Watch</span>
+      </div>
+      <div class="nav-links">
+        <a href="index.html" class="animate__animated animate__fadeIn">Home</a>
+        <a href="profile.html" class="animate__animated animate__fadeIn">Supe Profile</a>
+        <a href="dash.html" class="animate__animated animate__fadeIn">Dashboard</a>
+        <a href="incidents.html" class="animate__animated animate__fadeIn incidents">Incidents</a>
+      </div>
+      <button class="hamburger" id="hamburgerBtn">
+        <i class="fas fa-bars"></i>
+      </button>
+    </nav>
+
+    <!-- Heading & Description -->
+    <h2 class="page-heading">Supe Activity Heatmap</h2>
+    <p class="description">
+      These points represent areas in the US where supe-related activities or incidents have been "watched." The heatmap shows higher intensities where activity is concentrated.
+    </p>
+
+    <!-- Map Container -->
+    <div id="map"></div>
+
+    <script>
+      // Initialize the Leaflet map (centered over the US)
+      const map = L.map('map').setView([39.8283, -98.5795], 4);
+
+      // Add OpenStreetMap tiles
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap'
+      }).addTo(map);
+
+      // Mock data for supe-related activity (US cities)
+      // Format: [latitude, longitude, intensity]
+      const heatData = [
+        [40.7128, -74.0060, 0.9],   // New York City
+        [34.0522, -118.2437, 0.8],  // Los Angeles
+        [41.8781, -87.6298, 0.85],  // Chicago
+        [29.7604, -95.3698, 0.75],  // Houston
+        [33.4484, -112.0740, 0.65], // Phoenix
+        [39.9526, -75.1652, 0.7],   // Philadelphia
+        [29.4241, -98.4936, 0.65],  // San Antonio
+        [32.7157, -117.1611, 0.7],  // San Diego
+        [32.7767, -96.7970, 0.8],   // Dallas
+        [37.7749, -122.4194, 0.75], // San Francisco
+        [30.2672, -97.7431, 0.65],  // Austin
+        [39.9612, -82.9988, 0.55],  // Columbus
+        [35.2271, -80.8431, 0.7]    // Charlotte
+      ];
+
+      // Add the heatmap layer with a custom gradient (reddish)
+      L.heatLayer(heatData, {
+        radius: 25,
+        blur: 15,
+        maxZoom: 17,
+        gradient: {
+          0.2: 'orange',
+          0.6: 'red',
+          1.0: '#b30000'
+        }
+      }).addTo(map);
+    </script>
+  </body>
+</html>

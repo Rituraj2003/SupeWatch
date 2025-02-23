@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SupeWatch Incident Reports</title>
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    rel="stylesheet"
+  />
+  <style>
+   
+/* Root variables and base styles */
+:root {
+      --primary: #e31837;
+      --primary-dark: #b31229;
+      --dark: #1a1a1a;
+      --darker: #0f0f0f;
+      --light: #ffffff;
+      --gray: #333333;
+      --accent: #ffd700;
+      --danger: #ff4444;
+      --success: #00c851;
+      --warning: #ffbb33;
+      --overlay-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+      
+    }
+    body {
+      background-image: url("https://preview.redd.it/it-is-season-5-and-homelander-completely-snaps-going-on-a-v0-0o497t7lnaoc1.png?auto=webp&s=33f34993b87e3185190d946b1d1c26bb64f9289a"); /* Background image */
+      background-size: cover; /* Cover the entire background */
+      background-repeat: no-repeat; /* Do not repeat the image */
+      background-color: var(--overlay-color); /* Apply the overlay */
+      background-blend-mode: overlay; /* Blend the overlay with the image */
+      color: var(--light);
+      line-height: 1.6;
+      opacity: 0; /* Start body invisible */
+      animation: bodyFadeIn 0.5s ease-in-out forwards; /* Fade in the body */
+    }
+    @keyframes bodyFadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+    /* Top Navigation */
+    .navbar {
+      background-color: var(--darker);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 1000;
+    }
+    .navbar .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .hamburger {
+      display: none;
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      color: var(--light);
+      cursor: pointer;
+    }
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+      transition: all 0.3s ease;
+    }
+    .nav-links a {
+      color: var(--light);
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      transition: background 0.3s ease;
+    }
+    .nav-links a:hover,
+    .nav-links a.active {
+      background-color: var(--primary);
+    }
+    /* Incident badge on nav */
+    .badge {
+      background-color: var(--primary);
+      color: var(--light);
+      border-radius: 50%;
+      padding: 0 6px;
+      margin-left: 5px;
+      font-size: 0.9rem;
+    }
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    /* Page Header */
+    .page-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .page-header h1 {
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+    }
+    .page-header p {
+      font-size: 1rem;
+      color: #ccc;
+    }
+    /* Incident Report Cards */
+    .incident-list {
+      margin-bottom: 2rem;
+    }
+    .incident-report {
+      background: linear-gradient(to right, rgb(130, 38, 38), rgba(236, 224, 224, 0));
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease; /* Add background-color transition */
+    }
+    .incident-report:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 15px rgba(24, 39, 137, 0.2);
+      background-color: #011134; /* Change background color on hover */
+    }
+    .incident-report p {
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .hamburger {
+        display: block;
+      }
+      .nav-links {
+        position: absolute;
+        top: 70px;
+        right: 0;
+        background-color: var(--darker);
+        width: 200px;
+        flex-direction: column;
+        gap: 0;
+        display: none;
+        padding: 1rem 0;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      }
+      .nav-links a {
+        margin: 0.5rem 1rem;
+      }
+      .nav-links.show {
+        display: flex;
+      }
+    }
+  </style>
+
+ 
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">SupeWatch</div>
+    <button class="hamburger" id="hamburgerBtn">
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="profile.html">Supe Profile</a>
+      <a href="heatmap.html">HeatMap</a>
+      <a href="incidents.html" class="active">Incidents <span id="incidentBadge" class="badge">0</span></a>
+      <a href="dash.html">Dashboard</a>
+      
+    </div>
+  </nav>
+  
+  <div class="container">
+    <div class="page-header">
+      <h1 style="font-size: 80px;">Incident Reports</h1>
+      <p style="color: whitesmoke;">View all incident reports submitted by users in real-time.</p>
+    </div>
+    
+    <div class="incident-list" id="incidentList">
+      </div>
+  </div>
+  
+  <script>
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const navLinks = document.getElementById('navLinks');
+    hamburgerBtn.addEventListener('click', () => {
+      navLinks.classList.toggle('show');
+    });
+    
+    function loadIncidents() {
+      let incidents = localStorage.getItem('incidentReports');
+      if (incidents) {
+        try {
+          incidents = JSON.parse(incidents);
+        } catch (e) {
+          incidents = [];
+        }
+      } else {
+        incidents = [];
+      }
+      return incidents;
+    }
+    
+    function renderIncidents() {
+      const incidentList = document.getElementById('incidentList');
+      incidentList.innerHTML = "";
+      const incidents = loadIncidents();
+
+      if (incidents.length === 0) {
+        incidentList.innerHTML = "<p>No incident reports available.</p>";
+      } else {
+        incidents.forEach((incident) => {
+          const div = document.createElement('div');
+          div.className = 'incident-report';
+          div.innerHTML = `
+            <p><strong>Location:</strong> ${incident.location}</p>
+            <p><strong>Time:</strong> ${incident.time}</p>
+            <p><strong>Description:</strong> ${incident.desc}</p>
+          `;
+          incidentList.appendChild(div);
+        });
+      }
+      updateIncidentBadge();
+    }
+    
+    function updateIncidentBadge() {
+      const incidents = loadIncidents();
+      document.getElementById('incidentBadge').textContent = incidents.length;
+    }
+    
+    document.addEventListener('DOMContentLoaded', renderIncidents);
+
+    window.addEventListener('storage', () => {
+        renderIncidents();
+    });
+
+  </script>
+</body>
+</html>

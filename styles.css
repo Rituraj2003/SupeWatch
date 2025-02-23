@@ -1,0 +1,290 @@
+:root {
+    --primary: #e31837;
+    --primary-dark: #b31229;
+    --dark: #1a1a1a;
+    --darker: #0f0f0f;
+    --light: #ffffff;
+    --gray: #333333;
+    --accent: #ffd700;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  body {
+    background-color: var(--dark);
+    color: var(--light);
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Navbar */
+  .navbar {
+    background: linear-gradient(to right, var(--darker), var(--dark));
+    padding: 1rem 2rem;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 20px rgba(227, 24, 55, 0.2);
+  }
+  
+  .logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  
+  .logo span {
+    color: var(--accent);
+  }
+  
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    transition: all 0.3s ease;
+  }
+  
+  .nav-links a {
+    color: var(--light);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+  }
+  
+  .nav-links a:hover {
+    color: var(--accent);
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .btn {
+    padding: 0.8rem 1.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    background-color: var(--primary);
+    color: var(--light);
+  }
+  
+  .btn:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(227, 24, 55, 0.3);
+  }
+  
+  /* Hero Section */
+  .hero {
+    height: 110vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    background: url('assets/bgimage1.jpg') no-repeat center center;
+    background-size: cover;
+    position: relative;
+    transition: background-image 1s ease-in-out;
+  }
+  
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, var(--primary) 0%, transparent 100%);
+    opacity: 0.3;
+  }
+  
+  .hero-content {
+    max-width: 800px;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .hero h1 {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    animation: fadeInDown 1s ease-out;
+  }
+  
+  .hero p {
+    font-size: 1.4rem;
+    margin-bottom: 2rem;
+    color: #f0f0f0;
+    animation: fadeIn 1s ease-out 0.5s both;
+  }
+  
+  .hero .hero-btn {
+    padding: 1.2rem 2.4rem;
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
+  }
+  
+  .hero.slide {
+    animation: slideEffect 1s forwards;
+  }
+  
+  @keyframes slideEffect {
+    0% {
+      background-position: 100% center;
+    }
+    100% {
+      background-position: 0% center;
+    }
+  }
+  
+  /* Featured Section */
+  .featured-section {
+    padding: 6rem 2rem;
+    background-color: var(--darker);
+  }
+  
+  .section-title {
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--accent);
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  
+  .featured-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .feature-card {
+    background: linear-gradient(to bottom right, var(--gray), var(--dark));
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(227, 24, 55, 0.2);
+    border-color: var(--primary);
+  }
+  
+  .feature-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .feature-content {
+    padding: 1.5rem;
+  }
+  
+  .feature-content h3 {
+    color: var(--primary);
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+  }
+  
+  .feature-badge {
+    display: inline-block;
+    padding: 0.3rem 1rem;
+    background-color: var(--primary);
+    color: var(--light);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    margin-top: 1rem;
+  }
+  
+  /* Admin Dashboard Section */
+  .admin-dashboard {
+    padding: 4rem 2rem;
+    background-color: var(--darker);
+    width: 100%;
+  }
+  
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .stat-card {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 8px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(227, 24, 55, 0.3);
+  }
+  
+  .stat-number {
+    font-size: 2.5rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  
+  .stat-label {
+    font-size: 1.2rem;
+    color: #cccccc;
+  }
+  
+  /* Stats Section Title (reuse .section-title if desired) */
+  
+  /* Responsive Hamburger Menu */
+  @media (max-width: 768px) {
+    .nav-links {
+      display: none;
+    }
+    .nav-links.show {
+      display: flex;
+      flex-direction: column;
+      background: var(--darker);
+      position: absolute;
+      top: 70px;
+      right: 0;
+      width: 200px;
+      padding: 1rem 0;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+  }
+    
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  

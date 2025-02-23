@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Supe Profiles - SupeWatch</title>
+
+    <link rel="stylesheet" href="profile.css" />
+
+    <!-- Font Awesome for the hamburger icon -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <!-- Animate.css for animations -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+      rel="stylesheet"
+    />
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const hamburgerBtn = document.getElementById("hamburgerBtn");
+        const navLinks = document.querySelector(".nav-links");
+
+        // Toggle the .show class on nav-links
+        hamburgerBtn.addEventListener("click", () => {
+          navLinks.classList.toggle("show");
+        });
+      });
+
+      function viewProfile(url) {
+        window.location.href = url;
+      }
+    </script>
+  </head>
+  <body>
+    <!-- NAVBAR (no Login button) -->
+    <nav class="navbar">
+      <div class="logo">
+        Supe<span>Watch</span>
+      </div>
+      <div class="nav-links">
+        <a href="index.html" class="animate__animated animate__fadeIn">Home</a>
+        <a href="profile.html" class="animate__animated animate__fadeIn">Supe Profile</a>
+        <a href="heatmap.html" class="animate__animated animate__fadeIn">HeatMap</a>
+        <a href="incidents.html" class="animate__animated animate__fadeIn incidents">Incidents</a>
+      </div>
+      <button class="hamburger" id="hamburgerBtn">
+        <i class="fas fa-bars"></i>
+      </button>
+    </nav>
+
+    <p>SUPE PROFILE</p>
+
+    <div class="profiles-grid">
+      <div class="profile-card" onclick="viewProfile('homelander.html')">
+        <img
+          class="profile-img"
+          src="Profile/homelander.jpg"
+          alt="Homelander"
+        />
+        <h2>Homelander</h2>
+      </div>
+      <div class="profile-card" onclick="viewProfile('soldierboy.html')">
+        <img
+          class="profile-img"
+          src="Profile/09EF7C92-CEBD-4470-AAAC-0569717399F9.jpeg.webp"
+          alt="Soldier Boy"
+        />
+        <h2>Soldier Boy</h2>
+      </div>
+      <div class="profile-card" onclick="viewProfile('billy.html')">
+        <img
+          class="profile-img"
+          src="Profile/billy.jpeg"
+          alt="Billy Butcher"
+        />
+        <h2>Billy Butcher</h2>
+      </div>
+      <div class="profile-card" onclick="viewProfile('starlight.html')">
+        <img
+          class="profile-img"
+          src="Profile/starlight.jpg"
+          alt="Starlight"
+        />
+        <h2>Starlight</h2>
+      </div>
+      <div class="profile-card" onclick="viewProfile('queen.html')">
+        <img
+          class="profile-img"
+          src="Profile/queenm.jpeg"
+          alt="Queen Maeve"
+        />
+        <h2>Queen Maeve</h2>
+      </div>
+      <div class="profile-card" onclick="viewProfile('hughie.html')">
+        <img
+          class="profile-img"
+          src="Profile/hughie.jpg"
+          alt="Hughie"
+        />
+        <h2>Hughie</h2>
+      </div>
+      <div class="profile-card" onclick="viewProfile('atrain.html')">
+        <img
+          class="profile-img"
+          src="Profile/a-train.jpeg"
+          alt="A-Train"
+        />
+        <h2>A-Train</h2>
+      </div>
+    </div>
+  </body>
+</html>

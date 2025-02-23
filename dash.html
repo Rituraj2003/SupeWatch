@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SupeWatch Dashboard</title>
+  <!-- Font Awesome for icons -->
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    rel="stylesheet"
+  />
+  <style>
+    /* Root variables and base styles with updated attractive red colors */
+    :root {
+      --primary: #e31837;       /* Vibrant red */
+      --primary-dark: #b31229;  /* Darker red */
+      --dark: #212121;          /* Dark gray */
+      --darker: #121212;        /* Near-black */
+      --light: #f5f5f5;         /* Off-white */
+      --gray: #757575;          /* Medium gray */
+      --accent: #ffeb3b;        /* Bright yellow accent */
+      --danger: #ff4444;
+      --success: #00c851;
+      --warning: #ffbb33;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Arial", sans-serif;
+    }
+    body {
+      background: linear-gradient(135deg, var(--dark), var(--darker));
+      color: var(--light);
+      line-height: 1.6;
+      animation: fadeIn 1s ease-out;
+    }
+    /* Top Navigation (responsive) */
+    .navbar {
+      background: linear-gradient(135deg, var(--darker), var(--dark));
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 1000;
+      animation: fadeInDown 0.8s ease-out;
+    }
+    .navbar .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .hamburger {
+      display: none;
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      color: var(--light);
+      cursor: pointer;
+    }
+    /* Navigation links container */
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+      transition: all 0.3s ease;
+    }
+    .nav-links a {
+      color: var(--light);
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      transition: background 0.3s ease;
+    }
+    .nav-links a:hover,
+    .nav-links a.active {
+      background-color: var(--primary);
+    }
+    /* Badge for incident count */
+    .badge {
+      background-color: var(--primary);
+      color: var(--light);
+      border-radius: 50%;
+      padding: 0 6px;
+      margin-left: 5px;
+      font-size: 0.9rem;
+    }
+    /* Container for page content */
+    .container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      animation: fadeInUp 0.8s ease-out;
+    }
+    /* Dashboard heading */
+    .dashboard-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .dashboard-header h1 {
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+    }
+    .dashboard-header p {
+      font-size: 1rem;
+      color: #ccc;
+    }
+    /* Stats section */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: linear-gradient(135deg, var(--gray), var(--dark));
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: fadeInUp 0.5s ease-out;
+    }
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 15px rgba(227, 24, 55, 0.2);
+    }
+    .stat-number {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      color: var(--accent);
+    }
+    .stat-label {
+      font-size: 1rem;
+      color: #ccc;
+    }
+    /* Supe registry section */
+    .section-title {
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 0.5rem;
+    }
+    .search-bar {
+      display: flex;
+      gap: 0.5rem;
+      background-color: var(--darker);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      max-width: 400px;
+      margin: 1rem auto;
+    }
+    .search-bar input {
+      background: none;
+      border: none;
+      color: var(--light);
+      width: 100%;
+      outline: none;
+    }
+    /* Updated background for Known Supes list */
+    .supe-list {
+      margin-bottom: 2rem;
+      background: linear-gradient(to right, rgb(138, 91, 91), rgb(71, 22, 22));
+      padding: 1rem;
+      border-radius: 8px;
+    }
+    .supe-card {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: linear-gradient(to right, rgb(34, 31, 31), rgba(236, 224, 224, 0));
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: fadeInUp 0.6s ease-out;
+    }
+    .supe-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 15px rgba(227, 24, 55, 0.2);
+    }
+    .supe-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .supe-info {
+      flex: 1;
+    }
+    .supe-info h3 {
+      margin-bottom: 0.3rem;
+    }
+    .supe-info p {
+      font-size: 0.9rem;
+      margin-bottom: 0.2rem;
+    }
+    .update-btn {
+      padding: 0.5rem 1rem;
+      
+      border: none;
+      height: 50px;
+      width: 100px;
+      border-radius: 4px;
+      background-color: rgb(10, 10, 37);
+      color: var(--light);
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    .update-btn:hover {
+      background-color: var(--primary-dark);
+      transform: scale(1.05);
+    }
+    /* News Feed */
+    .news-feed {
+      margin-bottom: 2rem;
+    }
+    .news-feed .filter-btns {
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .news-feed .filter-btns button {
+      padding: 0.5rem 1rem;
+      background-color: var(--darker);
+      color: var(--light);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 4px;
+      margin-right: 0.5rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .news-feed .filter-btns button:hover,
+    .news-feed .filter-btns button.active {
+      background-color: var(--primary);
+    }
+    /* Change the color of the Heroic Acts filter button */
+    .filter-btn[data-category="Heroic Acts"] {
+      background-color: #ff7961;
+      color: var(--light);
+    }
+    .filter-btn[data-category="Heroic Acts"]:hover,
+    .filter-btn[data-category="Heroic Acts"].active {
+      background-color: #ff3d2e;
+    }
+    /* Change the color of the Scandals filter button */
+    .filter-btn[data-category="Scandals"] {
+      background-color: #f48fb1;
+      color: var(--light);
+    }
+    .filter-btn[data-category="Scandals"]:hover,
+    .filter-btn[data-category="Scandals"].active {
+      background-color: #f06292;
+    }
+    .news-item {
+      background: linear-gradient(to right, rgb(138, 91, 91), rgb(71, 22, 22));
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      animation: fadeInUp 0.5s ease-out;
+    }
+    .news-item:hover {
+      background-color: #2a2a2a;
+      transform: translateY(-3px);
+    }
+    .news-item h4 {
+      margin-bottom: 0.5rem;
+      color: var(--accent);
+    }
+    .news-item p {
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+    .news-item .category-badge {
+      background-color: var(--primary);
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      margin-right: 0.5rem;
+    }
+    /* Incident Reports Section */
+    .incident-section form {
+      background :linear-gradient(to right, rgb(138, 91, 91), rgb(71, 22, 22));;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      animation: fadeInUp 0.5s ease-out;
+    }
+    .incident-section form label {
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+    .incident-section form input,
+    .incident-section form textarea {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border: none;
+      border-radius: 4px;
+      background-color: #2a2a2a;
+      color: var(--light);
+    }
+    .incident-section form button {
+      background-color: var(--primary);
+      color: var(--light);
+      border: none;
+      padding: 0.7rem 1.2rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .incident-section form button:hover {
+      background-color: var(--primary-dark);
+    }
+    .incident-list .incident-report {
+      background-color: rgb(76, 74, 74); /* Changed background to grey */
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: fadeInUp 0.5s ease-out;
+    }
+    .incident-list .incident-report:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 15px rgba(227, 24, 55, 0.2);
+    }
+    .incident-list .incident-report p {
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+    /* Remove button styling */
+    .remove-btn {
+      background-color: var(--danger);
+      color: var(--light);
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 0.5rem;
+    }
+    .remove-btn:hover {
+      background-color: #d32f2f;
+    }
+    /* Social Interaction (Upvotes/Comments) */
+    .social-section .social-card {
+      background-color: var(--darker);
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      animation: fadeInUp 0.5s ease-out;
+    }
+    .social-actions button {
+      background: none;
+      border: none;
+      color: var(--light);
+      margin-right: 1rem;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+    .social-actions button:hover {
+      color: var(--accent);
+    }
+    /* Responsive adjustments: hamburger menu and nav links */
+    @media (max-width: 768px) {
+      .hamburger {
+        display: block;
+      }
+      /* Hide nav links by default on mobile */
+      .nav-links {
+        position: absolute;
+        top: 70px;
+        right: 0;
+        background-color: var(--darker);
+        width: 200px;
+        flex-direction: column;
+        gap: 0;
+        display: none;
+        padding: 1rem 0;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      }
+      .nav-links a {
+        margin: 0.5rem 1rem;
+      }
+      .nav-links.show {
+        display: flex;
+        animation: slideIn 0.3s ease-out;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      .supe-card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    /* Keyframes Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(100%); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <nav class="navbar">
+    <div class="logo">SupeWatch</div>
+    <!-- Hamburger button for mobile -->
+    <button class="hamburger" id="hamburgerBtn">
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="profile.html">Supe Profile</a>
+     
+      <a href="incidents.html">Incidents <span id="incidentCount" class="badge">0</span></a>
+      <a href="#" class="active">Dashboard</a>
+      <a href="login.html">Login</a>
+    </div>
+  </nav>
+
+  <!-- Main Dashboard Container -->
+  <div class="container">
+    <div class="dashboard-header">
+      <h1>Dashboard Overview</h1>
+      <p>Your centralized hub for tracking supes, reporting incidents, and staying updated.</p>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number" id="activeIncidents">47</div>
+        <div class="stat-label">Active Incidents</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="trackedSupes">89</div>
+        <div class="stat-label">Tracked Supes</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="citizenReports">1,247</div>
+        <div class="stat-label">Citizen Reports</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">24/7</div>
+        <div class="stat-label">Live Monitoring</div>
+      </div>
+    </div>
+
+    <!-- Supe Registry Section -->
+    <section class="supe-list">
+      <h2 class="section-title">Known Supes & Characters</h2>
+      <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search supes..." id="supeSearch" />
+      </div>
+      <div id="supeCards"></div>
+    </section>
+
+    <!-- News Feed Section -->
+    <section class="news-feed">
+      <h2 class="section-title">News Feed</h2>
+      <div class="filter-btns">
+        <button class="filter-btn active" data-category="all">All</button>
+        <button class="filter-btn" data-category="Heroic Acts">Heroic Acts</button>
+        <button class="filter-btn" data-category="Collateral Damage">Collateral Damage</button>
+        <button class="filter-btn" data-category="Scandals">Scandals</button>
+      </div>
+      <div id="newsItems"></div>
+    </section>
+
+    <!-- Incident Reports Section (Dashboard) -->
+    <section class="incident-section">
+      <h2 class="section-title">Report an Incident</h2>
+      <form id="incidentForm">
+        <label for="incidentLocation">Location:</label>
+        <input type="text" id="incidentLocation" required />
+
+        <label for="incidentTime">Time:</label>
+        <input type="text" id="incidentTime" placeholder="e.g., 2:00 PM" required />
+
+        <label for="incidentDesc">Description:</label>
+        <textarea id="incidentDesc" rows="3" required></textarea>
+
+        <button type="submit">Submit Report</button>
+      </form>
+
+      <div class="incident-list">
+        <h3>Recent Incident Reports</h3>
+        <div id="incidentReports"></div>
+      </div>
+    </section>
+
+    <!-- Social Interaction Section (Upvotes/Comments) -->
+    <section class="social-section">
+      <h2 class="section-title">Community Interactions</h2>
+      <div class="social-card">
+        <div>
+          <h4>Homelander Sighting</h4>
+          <p>Multiple citizens reported seeing Homelander in downtown area.</p>
+        </div>
+        <div class="social-actions">
+          <button onclick="upvotePost(this)"><i class="fas fa-thumbs-up"></i> <span>Upvote</span></button>
+          <button onclick="commentOnPost(this)"><i class="fas fa-comment"></i> <span>Comment</span></button>
+        </div>
+      </div>
+      <!-- Additional social cards can be added here -->
+    </section>
+  </div>
+
+  <script>
+    // Hamburger menu toggle
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const navLinks = document.getElementById('navLinks');
+    hamburgerBtn.addEventListener('click', () => {
+      navLinks.classList.toggle('show');
+    });
+
+    // 1. Dynamic Stats Simulation
+    setInterval(() => {
+      const activeIncidents = document.getElementById("activeIncidents");
+      const current = parseInt(activeIncidents.textContent.replace(/,/g, ""));
+      const increment = Math.floor(Math.random() * 3);
+      activeIncidents.textContent = (current + increment).toLocaleString();
+    }, 5000);
+
+    // 2. Supe Registry
+    const supes = [
+      {
+        name: "Homelander",
+        superpowers: "Flight, Laser Eyes, Super Strength",
+        affiliation: "The Seven",
+        status: "Last spotted in New York",
+        image: "https://mediaproxy.tvtropes.org/width/1200/https://static.tvtropes.org/pmwiki/pub/images/e68a2c53_0ed5_4979_bb24_a1842f76122e.jpeg"
+      },
+      {
+        name: "Starlight",
+        superpowers: "Electricity Manipulation, Energy Projection",
+        affiliation: "The Seven",
+        status: "On a mission",
+         image:"https://hips.hearstapps.com/hmg-prod/images/starlight-the-boys-667c46debc25e.jpeg?crop=0.845xw:1.00xh;0,0&resize=980:*"
+      },
+      {
+        name: "The Deep",
+        superpowers: "Underwater Breathing, Communication with Sea Life",
+        affiliation: "The Seven",
+        status: "In hiding",
+        image:"https://hips.hearstapps.com/hmg-prod/images/21-1599224958.jpg?crop=0.5xw:1xh;center,top&resize=1200:*"
+      },
+      {
+        name: "Billy Butcher",
+        superpowers: "None – cunning, strategic, and relentless",
+        affiliation: "The Boys",
+        status: "On a vendetta against supes",
+          image :"https://rukminim2.flixcart.com/image/850/1000/kxkqavk0/poster/j/x/e/medium-tv-show-the-boys-billy-butcher-the-boys-tv-show-matte-original-imagayyq7datpzdy.jpeg?q=90&crop=false"
+      },
+      {
+        name: "Hughie Campbell",
+        superpowers: "None – resourceful and empathetic",
+        affiliation: "The Boys",
+        status: "Documenting supe actions",
+         image :"https://upload.wikimedia.org/wikipedia/en/6/64/Jack-Quaid-as-Hughie-Campbell.webp"
+      },
+      {
+        name: "Soldier Boy",
+        superpowers: "Enhanced strength, combat skills, leadership",
+        affiliation: "Payback",
+        status: "Returning from long dormancy",
+          image:"https://preview.redd.it/what-do-you-think-soldier-boys-role-will-be-in-season-4-v0-fw2zq8uvifra1.jpg?width=640&crop=smart&auto=webp&s=d5cf2c6036e858bee2567fb8ea16fd54045bc670"
+      }
+    ];
+
+    function renderSupes() {
+      const supeCards = document.getElementById("supeCards");
+      supeCards.innerHTML = "";
+      supes.forEach((supe, index) => {
+        // Check for image property; if not provided, use a placeholder.
+        const imgSrc = supe.image ? supe.image : `https://via.placeholder.com/50x50/333/666?text=${supe.name.charAt(0)}`;
+        const card = document.createElement("div");
+        card.className = "supe-card";
+        card.innerHTML = `
+          <img src="${imgSrc}" alt="${supe.name}" class="supe-avatar" />
+          <div class="supe-info">
+            <h3>${supe.name}</h3>
+            <p><strong>Superpowers:</strong> ${supe.superpowers}</p>
+            <p><strong>Affiliation:</strong> ${supe.affiliation}</p>
+            <p><strong>Status:</strong> <span id="status-${index}">${supe.status}</span></p>
+          </div>
+          <button class="update-btn" onclick="updateSupeStatus(${index})">Update</button>
+        `;
+        supeCards.appendChild(card);
+      });
+    }
+
+    window.updateSupeStatus = function(index) {
+      const newStatus = prompt("Enter new status for " + supes[index].name + ":");
+      if (newStatus) {
+        supes[index].status = newStatus;
+        document.getElementById("status-" + index).textContent = newStatus;
+      }
+    };
+
+    // Search Supes
+    document.getElementById("supeSearch").addEventListener("input", function() {
+      const query = this.value.toLowerCase();
+      const cards = document.querySelectorAll(".supe-card");
+      cards.forEach((card, index) => {
+        const supe = supes[index];
+        const text = (supe.name + supe.affiliation + supe.status).toLowerCase();
+        card.style.display = text.includes(query) ? "flex" : "none";
+      });
+    });
+
+    // Mock API call: update random supe's status every 10 seconds
+    setInterval(() => {
+      const randomIndex = Math.floor(Math.random() * supes.length);
+      const statuses = [
+        "Last spotted in Metropolis",
+        "On a mission",
+        "In hiding",
+        "Investigating a case",
+        "Patrolling the city"
+      ];
+      const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+      supes[randomIndex].status = randomStatus;
+      const statusEl = document.getElementById("status-" + randomIndex);
+      if (statusEl) {
+        statusEl.textContent = randomStatus;
+      }
+    }, 10000);
+
+    // 3. News Feed with category filters
+    const newsData = [
+      {
+        title: "Starlight Saves Bus Passengers",
+        category: "Heroic Acts",
+        content: "Starlight intervened to stop a runaway bus..."
+      },
+      {
+        title: "Property Damage in Midtown",
+        category: "Collateral Damage",
+        content: "A supes' confrontation caused significant damage..."
+      },
+      {
+        title: "Vought Under Scrutiny",
+        category: "Scandals",
+        content: "New documents reveal potential cover-up at Vought..."
+      },
+      {
+        title: "Soldier Boy Rumored Return",
+        category: "Heroic Acts",
+        content: "Historic supe rumored to be active again..."
+      }
+    ];
+
+    function renderNews(category = "all") {
+      const newsItems = document.getElementById("newsItems");
+      if (!newsItems) return;
+      newsItems.innerHTML = "";
+      newsData.forEach((item) => {
+        if (category === "all" || item.category === category) {
+          const div = document.createElement("div");
+          div.className = "news-item";
+          div.innerHTML = `
+            <h4>${item.title}</h4>
+            <p>${item.content}</p>
+            <span class="category-badge">${item.category}</span>
+          `;
+          newsItems.appendChild(div);
+        }
+      });
+    }
+
+    // Filter news by category
+    document.addEventListener("click", function(e) {
+      if (e.target.matches(".filter-btn")) {
+        document
+          .querySelectorAll(".filter-btn")
+          .forEach((b) => b.classList.remove("active"));
+        e.target.classList.add("active");
+        const category = e.target.getAttribute("data-category");
+        renderNews(category);
+      }
+    });
+
+    // 4. Incident Reports: Using local storage to persist incidents
+    function loadIncidents() {
+      let incidents = localStorage.getItem("incidentReports");
+      if (incidents) {
+        try {
+          incidents = JSON.parse(incidents);
+        } catch (e) {
+          incidents = [];
+        }
+      } else {
+        incidents = [];
+      }
+      return incidents;
+    }
+
+    function saveIncident(incident) {
+      let incidents = loadIncidents();
+      incidents.unshift(incident); // add new incident at the beginning
+      localStorage.setItem("incidentReports", JSON.stringify(incidents));
+    }
+
+    function renderIncidents() {
+      const incidentReportsDiv = document.getElementById("incidentReports");
+      incidentReportsDiv.innerHTML = "";
+      const incidents = loadIncidents();
+      if (incidents.length === 0) {
+        incidentReportsDiv.innerHTML = "<p>No incident reports available.</p>";
+      } else {
+        incidents.forEach((incident, index) => {
+          const div = document.createElement("div");
+          div.className = "incident-report";
+          div.innerHTML = `
+            <p><strong>Location:</strong> ${incident.location}</p>
+            <p><strong>Time:</strong> ${incident.time}</p>
+            <p><strong>Description:</strong> ${incident.desc}</p>
+            <button onclick="removeIncident(${index})" class="remove-btn">Remove</button>
+          `;
+          incidentReportsDiv.appendChild(div);
+        });
+      }
+      updateIncidentBadge();
+    }
+
+    function updateIncidentBadge() {
+      const incidents = loadIncidents();
+      document.getElementById("incidentCount").textContent = incidents.length;
+    }
+
+    function removeIncident(index) {
+      let incidents = loadIncidents();
+      incidents.splice(index, 1);
+      localStorage.setItem("incidentReports", JSON.stringify(incidents));
+      renderIncidents();
+    }
+
+    const incidentForm = document.getElementById("incidentForm");
+    const incidentReports = document.getElementById("incidentReports");
+    if (incidentForm) {
+      incidentForm.addEventListener("submit", function(e) {
+        e.preventDefault();
+        const location = document.getElementById("incidentLocation").value.trim();
+        const time = document.getElementById("incidentTime").value.trim();
+        const desc = document.getElementById("incidentDesc").value.trim();
+        if (location && time && desc) {
+          const incident = { location, time, desc };
+          saveIncident(incident);
+          renderIncidents();
+          incidentForm.reset();
+        }
+      });
+    }
+
+    // 5. Social Interactions (Upvote/Comment placeholders)
+    window.upvotePost = function(btn) {
+      alert("You upvoted this post!");
+    };
+
+    window.commentOnPost = function(btn) {
+      const userComment = prompt("Enter your comment:");
+      if (userComment) {
+        alert(`Comment posted: ${userComment}`);
+      }
+    };
+
+    // Initialize the page once DOM is ready
+    document.addEventListener("DOMContentLoaded", function() {
+      renderSupes();
+      renderNews(); // default news category = "all"
+      renderIncidents();
+    });
+  </script>
+</body>
+</html>

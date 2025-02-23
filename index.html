@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SupeWatch - Superhero Tracking System</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="logo">
+      Supe<span>Watch</span>
+    </div>
+    <div class="nav-links">
+      <a href="index.html" class="animate__animated animate__fadeIn">Home</a>
+      <a href="profile.html" class="animate__animated animate__fadeIn">Supe Profile</a>
+      <a href="heatmap.html" class="animate__animated animate__fadeIn">HeatMap</a>
+      <a href="incidents.html" class="animate__animated animate__fadeIn">Incidents</a>
+      <button class="btn btn-primary animate__animated animate__fadeIn" onclick="window.location.href='login.html'">Login</button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="animate__animated animate__fadeInDown">Track Supes in Real-Time</h1>
+      <p class="animate__animated animate__fadeIn animate__delay-1s">
+        Your premier platform for monitoring superhero activities, incidents, and public appearances.
+      </p>
+      <button class="btn btn-primary animate__animated animate__fadeIn animate__delay-2s" onclick="window.location.href='dash.html'">Enter Dashboard</button>
+    </div>
+  </section>
+
+  <section class="featured-section">
+    <h2 class="section-title">Latest Supe Activities</h2>
+    <div class="featured-grid">
+      <div class="feature-card animate__animated animate__fadeInUp">
+        <img src="assets/homelander1.jpg.webp" alt="Homelander" class="feature-image">
+        <div class="feature-content">
+          <h3>Homelander Sighting</h3>
+          <p>Recent appearance at Vought Tower raises questions about corporate influence.</p>
+          <span class="feature-badge">High Priority</span>
+        </div>
+      </div>
+      <div class="feature-card animate__animated animate__fadeInUp animate__delay-1s">
+        <img src="assets/starlightbg.jpg" alt="Starlight" class="feature-image">
+        <div class="feature-content">
+          <h3>Starlight Investigation</h3>
+          <p>Former Seven member's activities under scrutiny after recent events.</p>
+          <span class="feature-badge">Breaking News</span>
+        </div>
+      </div>
+      <div class="feature-card animate__animated animate__fadeInUp animate__delay-2s">
+        <img src="assets/coastel.webp" alt="The Deep" class="feature-image">
+        <div class="feature-content">
+          <h3>Coastal Incident</h3>
+          <p>Mysterious events reported along the eastern seaboard.</p>
+          <span class="feature-badge">Under Investigation</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEW: Admin Dashboard Section -->
+  <section class="admin-dashboard">
+    <h2 class="section-title">Admin Dashboard</h2>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number">247</div>
+        <div class="stat-label">Reports Filed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">Homelander</div>
+        <div class="stat-label">Most Searched Supe</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">East Coast</div>
+        <div class="stat-label">Top Incident Area</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">89</div>
+        <div class="stat-label">Active Supes Tracked</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">1.2M</div>
+        <div class="stat-label">Citizen Reports</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">24/7</div>
+        <div class="stat-label">Live Monitoring</div>
+      </div>
+    </div>
+  </section>
+  <!-- END Admin Dashboard Section -->
+
+  <script>
+    // Add scroll animation
+    document.addEventListener('scroll', () => {
+      const elements = document.querySelectorAll('.animate__animated');
+      elements.forEach(element => {
+        if (isElementInViewport(element)) {
+          element.style.visibility = 'visible';
+          element.classList.add('animate__fadeIn');
+        }
+      });
+    });
+
+    function isElementInViewport(el) {
+      const rect = el.getBoundingClientRect();
+      return (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+      );
+    }
+
+    // Background image slideshow with sliding animation
+    const images = [
+      'assets/bgimage1.jpg',
+      'assets/bgimage2.jpg',
+      'assets/bgimage3.jpg',
+    ];
+
+    let currentIndex = 0;
+    const heroSection = document.querySelector('.hero');
+
+    function changeBackground() {
+      const nextIndex = (currentIndex + 1) % images.length;
+      heroSection.style.backgroundImage = `url('${images[nextIndex]}')`;
+      heroSection.classList.add('slide');
+      setTimeout(() => {
+        heroSection.classList.remove('slide');
+      }, 1000);
+      currentIndex = nextIndex;
+    }
+
+    // Initial image load and set interval for slideshow
+    changeBackground();
+    setInterval(changeBackground, 5000);
+  </script>
+</body>
+
+</html>

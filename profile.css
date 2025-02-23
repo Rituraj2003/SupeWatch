@@ -1,0 +1,144 @@
+:root {
+    --primary: #e31837;
+    --primary-dark: #b31229;
+    --dark: #1a1a1a;
+    --darker: #0f0f0f;
+    --light: #ffffff;
+    --gray: #333333;
+    --accent: #ffd700;
+  }
+  
+  /* BODY */
+  body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, rgb(208, 68, 68), rgb(38, 30, 30));
+    color: white;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  /* HEADINGS */
+  p {
+    font-size: 70px;
+    font-weight: 600;
+  }
+  
+  /* PROFILES GRID */
+  .profiles-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 80px auto 0; /* top margin so content isn't hidden behind the fixed navbar */
+    padding: 20px;
+  }
+  
+  /* PROFILE CARD */
+  .profile-card {
+    text-align: center;
+    width: 220px;
+    background: #222;
+    padding: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.3s;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+  }
+  .profile-card:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+  }
+  .profile-img {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+  }
+  
+  /* NAVBAR */
+  .navbar {
+    background: linear-gradient(to right, var(--darker), var(--dark));
+    padding: 1rem 2rem;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 20px rgba(227, 24, 55, 0.2);
+  }
+  
+  .incidents {
+    margin-right: 50px;
+  }
+  
+  .logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  .logo span {
+    color: var(--accent);
+  }
+  
+  /* NAV LINKS */
+  .nav-links {
+    /* Remove default display so we can control it with media queries */
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    transition: all 0.3s ease;
+  }
+  .nav-links a {
+    color: var(--light);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+  }
+  .nav-links a:hover {
+    color: var(--accent);
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  /* HAMBURGER */
+  .hamburger {
+    display: none;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    color: var(--light);
+    cursor: pointer;
+  }
+  
+  /* RESPONSIVE: show hamburger below 768px */
+  @media (max-width: 768px) {
+    .hamburger {
+      display: block;
+    }
+    .nav-links {
+      position: absolute;
+      top: 70px;
+      right: 0;
+      background-color: var(--darker);
+      width: 200px;
+      flex-direction: column;
+      gap: 0;
+      /* By default, hide the menu on small screens. */
+      display: none;
+      padding: 1rem 0;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    .nav-links.show {
+      display: flex; /* toggled by JS */
+    }
+    .nav-links a {
+      margin: 0.5rem 1rem;
+    }
+  }
+  

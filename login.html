@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>SupeWatch - Login</title>
+    <link rel="stylesheet" href="login.css">
+    <!-- Font Awesome (optional if you want icons) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+  </head>
+  <body>
+    <div class="container visible">
+      <div class="logo">
+        <i class="fas fa-shield-alt"></i>
+        SupeWatch
+      </div>
+
+      <!-- Login Form -->
+      <div class="form-section active" id="login-form">
+        <h2>Sign In</h2>
+        <form>
+          <div class="input-box">
+            <input type="text" required>
+            <label>Login ID</label>
+          </div>
+          <div class="input-box">
+            <input type="password" required>
+            <label>Access Code</label>
+          </div>
+          <div class="error-message" id="login-error">Invalid credentials. Access denied.</div>
+          <button type="submit">Login</button>
+          <div class="toggle-link">
+            Don't have clearance? <a onclick="toggleForm('signup-form')">Sign Up</a>
+          </div>
+        </form>
+      </div>
+
+      <!-- Signup Form -->
+      <div class="form-section" id="signup-form">
+        <h2>Sign Up</h2>
+        <form>
+          <div class="input-box">
+            <input type="text" required>
+            <label>User Name</label>
+          </div>
+          <div class="input-box">
+            <input type="email" required>
+            <label>Email Address</label>
+          </div>
+
+          <!-- Floating Label for the Select Box -->
+          <div class="input-box select-box">
+            <select name="category" id="category" required>
+              <!-- Empty option to ensure default is blank -->
+              <option value="" disabled selected></option>
+              <option value="The Seven">The Seven</option>
+              <option value="Rogues">Rogues</option>
+              <option value="Independents">Independents</option>
+            </select>
+            <label for="category" class="floating-label">Preferred Supe Category</label>
+          </div>
+
+          <div class="input-box">
+            <input type="password" required>
+            <label>Create Access Code</label>
+          </div>
+          <div class="input-box">
+            <input type="password" required>
+            <label>Verify Access Code</label>
+          </div>
+          <div class="error-message" id="signup-error">Registration protocol failed.</div>
+          <button type="submit">Sign Up</button>
+          <div class="toggle-link">
+            Already have clearance? <a onclick="toggleForm('login-form')">Sign In</a>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script src="login.js"></script>
+  </body>
+</html>
